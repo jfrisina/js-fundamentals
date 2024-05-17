@@ -1,30 +1,21 @@
 /* ASSIGNMENT INSTRUCTIONS-------------------------------------
 
-We have: 
-    - 1 object    
-    - 1 object nested within an object
-    - 1 object with an array of nested objects
-    - 1 array of objects
-
 Our goal: 
+  
+    - Create a function named getLearnerData() that accepts these values as parameters, in the order listed: (CourseInfo, AssignmentGroup, [LearnerSubmission])
     - transform everything into an array of objects
-    - each object must contain the following info, along with the rest of their corresponding info:
+    - each object must look like this:
 
-    {
+        {
         "id": number,              
         "avg": number,
         <assignment_id>: number,
-    }
+      }
+
+*/
 
 
-
-    - Create a function named getLearnerData() that accepts these values as parameters, in the order listed: (CourseInfo, AssignmentGroup, [LearnerSubmission]), and returns the formatted result, which should be an array of objects as described above.
-
-
-END COMMENTS----------------------------------------------------*/
-
-
-// Provided data --------------------------------------------------
+// PROVIDED DATA --------------------------------------------------
 const CourseInfo = {
     id: 451,
     name: "Introduction to JavaScript"
