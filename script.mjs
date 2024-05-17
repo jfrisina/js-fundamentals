@@ -123,49 +123,38 @@ const CourseInfo = {
 		  totalScore: 0,            // set total score with undefined as a placeholder
 		  totalPossible: 0,         // set total points possible with undefined as a placeholder
 		  scores: {}                // add an empty object for all of the learner's scores since they can have more than one
-		};
+		  };
 	  }
   
     // find the assignment info based on the learnerID
 	  const assignment = AssignmentGroup.assignments.find(assignment => assignment.id === assignmentID); // search for the assignment id and assign it to a variable
 
     // check if assignment is due yet, and skip if isn't
-	  if (assignment && new Date(submission.submission.submitted_at) < new Date(assignment.due_at)) {
-      return;
+	  if (assignment && new Date(submission.submission.submitted_at) <= new Date(assignment.due_at)) {
+
+      // check if assignment submitted late
+      if (assignment && new Date(submission.submission.submitted_at) > new Date(assignment.due_at)) {
+        const latePenalty = assignment.points_possible * 0.1; // Deduct 10% of total points possible for late submission
+        submission.submission.score -= latePenalty; // Deduct penalty from submission score
+      }
+      learners[learnerID].totalScore += submission.submission.score; // update the learner's score from 0 to the actual value
+      learners[learnerID].totalPossible += assignment.points_possible; // update the matching assignment's possible points from 0 to the actual value
+      learners[learnerID].scores[assignmentID] = submission.submission.score / assignment.points_possible * 100; // learner's score in percentage format
     }
-  
-    // check if assignment submitted late
-		if (assignment && new Date(submission.submission.submitted_at) > new Date(assignment.due_at)) {
-    const latePenalty = assignment.points_possible * 0.1; // Deduct 10% of total points possible for late submission
-    submission.submission.score -= latePenalty; // Deduct penalty from submission score
-  }
-		
-    // add data validation for 0 possible points
-      if (assignment.points_possible === 0) {
-         throw "cannot calculate due to 0";
-      } else {
-        // add score to total score
-        learners[learnerID].totalScore += submission.submission.score; // update the learner's score from 0 to the actual value
-        learners[learnerID].totalPossible += assignment.points_possible; // update the matching assignment's possible points from 0 to the actual value
-        learners[learnerID].scores[assignmentID] = submission.submission.score / assignment.points_possible * 100; // learner's score in percentage format
-	  }
   });
 
 	// Calculate average score for each learner
 	const result = []; // create empty array variable for final result
 	for (const learnerID in learners) { // for... in loop based on learner ID in our newly created and updated learner object
 	  const learner = learners[learnerID];  // set variable for learner ID from our new learner object
-	  const avg = learner.totalScore / learner.totalPossible * 100; // set variable for calculating average learner score
+	  const avg = learner.totalScore / learner.totalPossible * 100 || 0; // set variable for calculating average learner score
 	  const learnerObj = { // set a new object for our learner data
-		id: learner.id, //populate the id with the learnerID 
-		avg: avg, // add the average info 
-		...learner.scores // add the learner scores using spread
+      id: learner.id, //populate the id with the learnerID 
+      avg: avg, // add the average info 
+      ...learner.scores // add the learner scores using spread
 	  };
 	  result.push(learnerObj); // add the newly created object into the final result array 
 	}
-  
-
-
 	return result; // return the final result
   }
   
