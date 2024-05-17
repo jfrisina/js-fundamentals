@@ -102,10 +102,10 @@ const CourseInfo = {
 	
 	// find learner ID by iterating over each submission
 	LearnerSubmissions.forEach(submission => {
-	  const learnerID = submission.learner_id;
+	  let learnerID = submission.learner_id;
   
     // set assignment ID variable;  
-    const assignmentID = submission.assignment_id;
+    let assignmentID = submission.assignment_id;
   
     // create learner object with placeholder values
 	  if (!learners[learnerID]) { // if the learnerID is not already in our new object
@@ -137,9 +137,9 @@ const CourseInfo = {
 	// Calculate average score for each learner
 	const result = []; // create empty array variable for final result
 	for (const learnerID in learners) { // for... in loop based on learner ID in our newly created and updated learner object
-	  const learner = learners[learnerID];  // set variable for learner ID from our new learner object
-	  const avg = learner.totalScore / learner.totalPossible * 100 || 0; // set variable for calculating average learner score
-	  const learnerObj = { // set a new object for our learner data
+	  let learner = learners[learnerID];  // set variable for learner ID from our new learner object
+	  let avg = learner.totalScore / learner.totalPossible * 100 || 0; // set variable for calculating average learner score
+	  let learnerObj = { // set a new object for our learner data
       id: learner.id, //populate the id with the learnerID 
       avg: avg, // add the average info 
       ...learner.scores // add the learner scores using spread
