@@ -94,7 +94,7 @@ const CourseInfo = {
 // START CODE -----------------------------------------------------------------------------------------------
 
   function getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions) {
-  // data validation - try catch!
+  // data validation - try catch
   try {
     if (AssignmentGroup.course_id !== CourseInfo.id) {
       throw "Course info does not match";
@@ -103,6 +103,7 @@ const CourseInfo = {
     console.error(error);
   }
 
+  // create empty object 
 	const learners = {};
 	
 	// find learner ID by iterating over each submission
@@ -127,7 +128,6 @@ const CourseInfo = {
 
     // check if assignment is due yet, and skip if isn't
 	  if (assignment && new Date(submission.submission.submitted_at) <= new Date(assignment.due_at)) {
-
       // check if assignment submitted late
       if (assignment && new Date(submission.submission.submitted_at) > new Date(assignment.due_at)) {
         const latePenalty = assignment.points_possible * 0.1; // Deduct 10% of total points possible for late submission
@@ -137,6 +137,8 @@ const CourseInfo = {
       learners[learnerID].totalPossible += assignment.points_possible; // update the matching assignment's possible points from 0 to the actual value
       learners[learnerID].scores[assignmentID] = submission.submission.score / assignment.points_possible * 100; // learner's score in percentage format
     }
+
+
   });
 
 	// Calculate average score for each learner
@@ -144,7 +146,7 @@ const CourseInfo = {
 	for (const learnerID in learners) { // for... in loop based on learner ID in our newly created and updated learner object
 	  let learner = learners[learnerID];  // set variable for learner ID from our new learner object
 	  let avg = learner.totalScore / learner.totalPossible * 100 || 0; // set variable for calculating average learner score
-	  let learnerObj = { // set a new object for our learner data
+    let learnerObj = { // set a new object for our learner data
       id: learner.id, //populate the id with the learnerID 
       avg: avg, // add the average info 
       ...learner.scores // add the learner scores using spread
