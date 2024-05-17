@@ -94,10 +94,15 @@ const CourseInfo = {
 // START CODE -----------------------------------------------------------------------------------------------
 
   function getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions) {
-  // data validation
-  if (AssignmentGroup.course_id != CourseInfo.id) {
-    throw "Course info does not match";
+  // data validation - try catch!
+  try {
+    if (AssignmentGroup.course_id !== CourseInfo.id) {
+      throw "Course info does not match";
+    }
+  } catch (error) {
+    console.error(error);
   }
+
 	const learners = {};
 	
 	// find learner ID by iterating over each submission
